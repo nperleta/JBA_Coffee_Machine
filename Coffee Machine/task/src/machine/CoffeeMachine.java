@@ -3,67 +3,162 @@ package machine;
 import java.util.Scanner;
 
 public class CoffeeMachine {
+    final static Scanner s = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Starting to make a coffee\n" + "Grinding coffee beans\n" +
-                "Boiling water\n" + "Mixing boiled water with crushed coffee beans\n" +
-                "Pouring coffee into the cup\n" + "Pouring some milk into the cup\n" +
-                "Coffee is ready!\n");
+        int[] inventory = new int[5];
+        inventory[0] = 400;     // water
+        inventory[1] = 540;     // milk
+        inventory[2] = 120;     // coffee beans
+        inventory[3] = 9;       // disposable cups
+        inventory[4] = 550;     // money
 
-        /*System.out.println("Write how many cups of coffee you will need:");
-        int br1 = scanner.nextInt();
-
-        System.out.println("For " + br1 + " cups of coffee you will need:\n" +
-                200 * br1 + " ml of water\n" + 50 * br1 + " ml of milk\n" +
-                15 * br1 + " g of coffee beans\n");*/
-
-        System.out.println("Write how many ml of water the coffee machine has: ");
-        int voda = scanner.nextInt();
-        System.out.println("Write how many ml of milk the coffee machine has: ");
-        int mlijeko = scanner.nextInt();
-        System.out.println("Write how many grams of coffee beans the coffee machine has: ");
-        int kava = scanner.nextInt();
-        System.out.println("Write how many cups of coffee you will need: ");
-        int br = scanner.nextInt();
-
-        int vodaSalica = 200, mlijekoSalica = 50, kavaSalica = 15;
-
-        // trazeni broj salica
-        int[] treba = new int[3];
-        treba[0] = br * vodaSalica;
-        treba[1] = br * mlijekoSalica;
-        treba[2] = br * kavaSalica;
-
-        // salica koliko moze napraviti
-        int[] max = new int[3];
-        max[0] = voda / vodaSalica;
-        max[1] = mlijeko / mlijekoSalica;
-        max[2] = kava / kavaSalica;
-
-        int N = Math.min(Math.min(max[0],max[1]),max[2] );
-
-        // visak salica
-        int[] visak = new int[3];
-        visak[0] = max[0] - br;
-        visak[1] = max[1] - br;
-        visak[2] = max[2] - br;
-
-        int M = Math.min(Math.min(visak[0],visak[1]),visak[2]);
-
-        String n = null;
-
-        if (treba[0] > voda || treba[1] > mlijeko || treba[2] > kava) {
-            n = "No, I can make only " + N + " cup(s) of coffee";
-        } else if (treba[0] == voda && treba[1] == mlijeko && treba[2] == kava) {
-            n = "Yes, I can make that amount of coffee";
-        } else if (treba[0] < voda && treba[1] < mlijeko && treba[2] < kava) {
-            if (M >= 1) {
-                n = "Yes, I can make that amount of coffee (and even " + M + " more than that)";
-            } else if (M == 0) {
-                n = "Yes, I can make that amount of coffee";
-            }
+        inventory();
+        action(inventory);
         }
-        System.out.println(n);
+
+
+     public static void inventory() {
+
+         System.out.println("\n");
+         System.out.println("The coffee machine has:\n");
+
+         int[] inventory = new int[5];
+         inventory[0] = 400;     // water
+         inventory[1] = 540;     // milk
+         inventory[2] = 120;     // coffee beans
+         inventory[3] = 9;       // disposable cups
+         inventory[4] = 550;     // money
+
+         System.out.println(inventory[0] + " ml of water\n" + inventory[1] +
+             " ml of milk\n" + inventory[2] + " g of coffee beans\n" +
+                 inventory[3] + " disposable cups\n" + "$" + inventory[4] + " of money\n");
     }
+
+
+    public static void makeEspresso(int[] inventory) {
+
+        /*Espresso:
+        250 ml of water, 16 g of coffee, 1 cup
+        It costs $4*/
+
+        inventory[0] -= 250;
+        inventory[2] -= 16;
+        inventory[3] -= 1;
+        inventory[4] += 4;
+
+        System.out.println("The coffee machine has: \n" + inventory[0]  + " ml of water\n" + inventory[1] +
+                " ml of milk\n" + inventory[2] + " g of coffee beans\n" + inventory[3] +
+                " disposable cups\n" + "$" + inventory[4] + " of money\n");
+    }
+
+    public static void makeLatte(int[] inventory) {
+
+        /*Latte:
+        350 ml of water,
+        75 ml of milk, and 20 g of coffee, 1 cup
+        It costs $7.*/
+
+        inventory[0] -= 350;
+        inventory[1] -= 75;
+        inventory[2] -= 20;
+        inventory[3] -= 1;
+        inventory[4] += 7;
+        System.out.println("The coffee machine has: \n" + inventory[0]  + " ml of water\n" + inventory[1] +
+                " ml of milk\n" + inventory[2] + " g of coffee beans\n" + inventory[3] +
+                " disposable cups\n" + "$" + inventory[4] + " of money\n");
+
+    }
+
+    public static void makeCappuccino(int[] inventory) {
+
+        /*Cappuccino:
+        200 ml of water, 100 ml of milk, and 12 g of coffee, 1 cup
+        It costs $6.*/
+
+        inventory[0] -= 200;
+        inventory[1] -= 100;
+        inventory[2] -= 12;
+        inventory[3] -= 1;
+        inventory[4] += 6;
+
+        System.out.println("The coffee machine has: \n" + inventory[0]  + " ml of water\n" + inventory[1] +
+                " ml of milk\n" + inventory[2] + " g of coffee beans\n" + inventory[3] +
+                " disposable cups\n" + "$" + inventory[4] + " of money\n");
+
+    }
+
+    public static void fill(int[] inventory) {
+
+        System.out.println("Write how many ml of water you want to add:");
+        int newWater = s.nextInt();
+        System.out.println("Write how many ml of milk you want to add:");
+        int newMilk = s.nextInt();
+        System.out.println("Write how many grams of coffee beans you want to add: ");
+        int newCoffee = s.nextInt();
+        System.out.println("Write how many disposable cups of coffee you want to add: ");
+        int newCup = s.nextInt();
+
+        inventory[0] = inventory[0] + newWater;
+        inventory[1] = inventory[1] + newMilk;
+        inventory[2] = inventory[2] + newCoffee;
+        inventory[3] = inventory[3] + newCup;
+
+        System.out.println("The coffee machine has: \n" + inventory[0]  + " ml of water\n" + inventory[1] +
+                " ml of milk\n" + inventory[2] + " g of coffee beans\n" + inventory[3] +
+                " disposable cups\n" + "$" + inventory[4] + " of money\n");
+
+    }
+
+    public static void take(int[] inventory) {
+
+        System.out.println("I gave you $" + inventory[4]);
+
+        inventory[4] = inventory[4] - inventory[4];
+
+        System.out.println("The coffee machine has: \n" + inventory[0]  + " ml of water\n" + inventory[1] +
+                " ml of milk\n" + inventory[2] + " g of coffee beans\n" + inventory[3] +
+                " disposable cups\n" + "$" + inventory[4] + " of money\n");
+
+
+    }
+
+    public static void action( int[] inventory) {
+        System.out.println("Write action (buy, fill, take):");
+        String action = s.next();
+        switch (action) {
+            case "buy":
+                System.out.println("What do you want to buy?" +
+                        " 1 - espresso, 2 - latte, 3 - cappuccino:");
+                String buy = s.next();
+
+                switch (buy) {
+                    case "1":
+                        makeEspresso(inventory);
+                        break;
+                    case "2":
+                        makeLatte(inventory);
+                        break;
+                    case "3":
+                        makeCappuccino(inventory);
+                        break;
+                    default:
+                        System.out.println("There is no such option");
+                        break;
+                }
+                break;
+            case "fill":
+                fill(inventory);
+                break;
+            case  "take":
+                take(inventory);
+                break;
+            default:
+                System.out.println("There is no such option");
+                break;
+        }
+
+    }
+
 }
